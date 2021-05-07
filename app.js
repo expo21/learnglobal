@@ -16,51 +16,51 @@ app.use(express.json());
 app.use(cors());
 
 //connect to database
-const mongoose = require("mongoose");
-const dbConfig = require("./config/dbConfig");
-mongoose.Promise = global.Promise;
-mongoose
-  .connect(dbConfig.URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("Connect to database.");
-  })
-  .catch((err) => {
-    console.log("Could not connect to the database. Exiting now...", err);
-    process.exit();
+// const mongoose = require("mongoose");
+// const dbConfig = require("./config/dbConfig");
+// mongoose.Promise = global.Promise;
+// mongoose
+//   .connect(dbConfig.URL, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then(() => {
+//     console.log("Connect to database.");
+//   })
+//   .catch((err) => {
+//     console.log("Could not connect to the database. Exiting now...", err);
+//     process.exit();
+//   });
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "build")));
+
+  app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
   });
+}
+// app.get("/home", (req, res) => {
+//   console.log("hdfgjsgf");
+//   res.send({ message: "sdhjdgdfjshd" });
+// });
 
-app.use(express.static(path.join(__dirname, "build")));
+// //require student routes
+// require("./app/routes/student.route")(app);
+// //require agent routes
+// require("./app/routes/agent.route")(app);
+// //require liveQuery routes
+// require("./app/routes/live_query.route")(app);
 
-app.get("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// //require counties route
+// require("./app/routes/country_page.route")(app);
 
-app.get("/home", (req, res) => {
-  console.log("hdfgjsgf");
-  res.send({ message: "sdhjdgdfjshd" });
-});
+// //require courses route
+// require("./app/routes/programCourse.route")(app);
 
-//require student routes
-require("./app/routes/student.route")(app);
-//require agent routes
-require("./app/routes/agent.route")(app);
-//require liveQuery routes
-require("./app/routes/live_query.route")(app);
+// //require school routes
+// require("./app/routes/school_general_info.route")(app);
 
-//require counties route
-require("./app/routes/country_page.route")(app);
-
-//require courses route
-require("./app/routes/programCourse.route")(app);
-
-//require school routes
-require("./app/routes/school_general_info.route")(app);
-
-//require countries routes
-require("./app/routes/country.route")(app);
+// //require countries routes
+// require("./app/routes/country.route")(app);
 
 //listen server
 app.listen(process.env.PORT || PORT, () => {
