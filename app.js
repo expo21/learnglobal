@@ -31,6 +31,12 @@ mongoose
     process.exit();
   });
 
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 app.get("/home", (req, res) => {
   console.log("hdfgjsgf");
   res.send({ message: "sdhjdgdfjshd" });
